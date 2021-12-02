@@ -1,0 +1,3 @@
+[submodule "othre/glfw-window"]
+	path = othre/glfw-window
+	url = https://github.com/OpenGL-Graphics/glfw-window.git
