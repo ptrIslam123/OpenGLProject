@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0.0)
 
-project(openGlApplication)
+project(simpleTriangleOpenGl)
 
 add_subdirectory(glfw-3.3.5)
 add_subdirectory(glad)
