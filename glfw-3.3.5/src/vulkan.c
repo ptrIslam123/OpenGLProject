@@ -297,7 +297,7 @@ GLFWAPI int glfwGetPhysicalDevicePresentationSupport(VkInstance instance,
 }
 
 GLFWAPI VkResult glfwCreateWindowSurface(VkInstance instance,
-                                         GLFWwindow* handle,
+                                         GLFWindow* handle,
                                          const VkAllocationCallbacks* allocator,
                                          VkSurfaceKHR* surface)
 {

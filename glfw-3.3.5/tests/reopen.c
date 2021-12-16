@@ -72,12 +72,12 @@ static void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void window_close_callback(GLFWwindow* window)
+static void window_close_callback(GLFWindow* window)
 {
     printf("Close callback triggered\n");
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
         return;
@@ -91,7 +91,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     }
 }
 
-static void close_window(GLFWwindow* window)
+static void close_window(GLFWindow* window)
 {
     double base = glfwGetTime();
     glfwDestroyWindow(window);
@@ -102,7 +102,7 @@ int main(int argc, char** argv)
 {
     int count = 0;
     double base;
-    GLFWwindow* window;
+    GLFWindow* window;
 
     srand((unsigned int) time(NULL));
 

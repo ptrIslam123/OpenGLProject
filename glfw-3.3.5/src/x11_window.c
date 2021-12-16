@@ -3153,7 +3153,7 @@ GLFWAPI Display* glfwGetX11Display(void)
     return _glfw.x11.display;
 }
 
-GLFWAPI Window glfwGetX11Window(GLFWwindow* handle)
+GLFWAPI Window glfwGetX11Window(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     _GLFW_REQUIRE_INIT_OR_RETURN(None);

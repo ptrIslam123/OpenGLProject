@@ -78,7 +78,7 @@ static void error_callback(int error, const char* description)
 
 int main(void)
 {
-    GLFWwindow* window;
+    GLFWindow* window;
     GLuint vertex_buffer, vertex_shader, fragment_shader, program;
     GLint mvp_location, vpos_location, vcol_location;
     float ratio;

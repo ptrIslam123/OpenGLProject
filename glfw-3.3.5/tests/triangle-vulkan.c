@@ -154,7 +154,7 @@ typedef struct {
 } SwapchainBuffers;
 
 struct demo {
-    GLFWwindow* window;
+    GLFWindow* window;
     VkSurfaceKHR surface;
     bool use_staging_buffer;
 
@@ -1480,17 +1480,17 @@ static void demo_error_callback(int error, const char* description) {
     fflush(stdout);
 }
 
-static void demo_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+static void demo_key_callback(GLFWindow* window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
 }
 
-static void demo_refresh_callback(GLFWwindow* window) {
+static void demo_refresh_callback(GLFWindow* window) {
     struct demo* demo = glfwGetWindowUserPointer(window);
     demo_draw(demo);
 }
 
-static void demo_resize_callback(GLFWwindow* window, int width, int height) {
+static void demo_resize_callback(GLFWindow* window, int width, int height) {
     struct demo* demo = glfwGetWindowUserPointer(window);
     demo->width = width;
     demo->height = height;

@@ -143,7 +143,7 @@ static GLFWcursor* create_tracking_cursor(void)
     return glfwCreateCursor(&image, 7, 7);
 }
 
-static void cursor_position_callback(GLFWwindow* window, double x, double y)
+static void cursor_position_callback(GLFWindow* window, double x, double y)
 {
     printf("%0.3f: Cursor position: %f %f (%+f %+f)\n",
            glfwGetTime(),
@@ -153,7 +153,7 @@ static void cursor_position_callback(GLFWwindow* window, double x, double y)
     cursor_y = y;
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
         return;
@@ -324,7 +324,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 int main(void)
 {
     int i;
-    GLFWwindow* window;
+    GLFWindow* window;
     GLFWcursor* star_cursors[CURSOR_FRAME_COUNT];
     GLFWcursor* current_frame = NULL;
     GLuint vertex_buffer, vertex_shader, fragment_shader, program;

@@ -760,7 +760,7 @@ GLFWAPI EGLDisplay glfwGetEGLDisplay(void)
     return _glfw.egl.display;
 }
 
-GLFWAPI EGLContext glfwGetEGLContext(GLFWwindow* handle)
+GLFWAPI EGLContext glfwGetEGLContext(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     _GLFW_REQUIRE_INIT_OR_RETURN(EGL_NO_CONTEXT);
@@ -774,7 +774,7 @@ GLFWAPI EGLContext glfwGetEGLContext(GLFWwindow* handle)
     return window->context.egl.handle;
 }
 
-GLFWAPI EGLSurface glfwGetEGLSurface(GLFWwindow* handle)
+GLFWAPI EGLSurface glfwGetEGLSurface(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     _GLFW_REQUIRE_INIT_OR_RETURN(EGL_NO_SURFACE);

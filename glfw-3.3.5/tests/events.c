@@ -48,7 +48,7 @@ static unsigned int counter = 0;
 
 typedef struct
 {
-    GLFWwindow* window;
+    GLFWindow* window;
     int number;
     int closeable;
 } Slot;
@@ -286,35 +286,35 @@ static void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void window_pos_callback(GLFWwindow* window, int x, int y)
+static void window_pos_callback(GLFWindow* window, int x, int y)
 {
     Slot* slot = glfwGetWindowUserPointer(window);
     printf("%08x to %i at %0.3f: Window position: %i %i\n",
            counter++, slot->number, glfwGetTime(), x, y);
 }
 
-static void window_size_callback(GLFWwindow* window, int width, int height)
+static void window_size_callback(GLFWindow* window, int width, int height)
 {
     Slot* slot = glfwGetWindowUserPointer(window);
     printf("%08x to %i at %0.3f: Window size: %i %i\n",
            counter++, slot->number, glfwGetTime(), width, height);
 }
 
-static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+static void framebuffer_size_callback(GLFWindow* window, int width, int height)
 {
     Slot* slot = glfwGetWindowUserPointer(window);
     printf("%08x to %i at %0.3f: Framebuffer size: %i %i\n",
            counter++, slot->number, glfwGetTime(), width, height);
 }
 
-static void window_content_scale_callback(GLFWwindow* window, float xscale, float yscale)
+static void window_content_scale_callback(GLFWindow* window, float xscale, float yscale)
 {
     Slot* slot = glfwGetWindowUserPointer(window);
     printf("%08x to %i at %0.3f: Window content scale: %0.3f %0.3f\n",
            counter++, slot->number, glfwGetTime(), xscale, yscale);
 }
 
-static void window_close_callback(GLFWwindow* window)
+static void window_close_callback(GLFWindow* window)
 {
     Slot* slot = glfwGetWindowUserPointer(window);
     printf("%08x to %i at %0.3f: Window close\n",
@@ -323,7 +323,7 @@ static void window_close_callback(GLFWwindow* window)
     glfwSetWindowShouldClose(window, slot->closeable);
 }
 
-static void window_refresh_callback(GLFWwindow* window)
+static void window_refresh_callback(GLFWindow* window)
 {
     Slot* slot = glfwGetWindowUserPointer(window);
     printf("%08x to %i at %0.3f: Window refresh\n",
@@ -334,7 +334,7 @@ static void window_refresh_callback(GLFWwindow* window)
     glfwSwapBuffers(window);
 }
 
-static void window_focus_callback(GLFWwindow* window, int focused)
+static void window_focus_callback(GLFWindow* window, int focused)
 {
     Slot* slot = glfwGetWindowUserPointer(window);
     printf("%08x to %i at %0.3f: Window %s\n",
@@ -342,7 +342,7 @@ static void window_focus_callback(GLFWwindow* window, int focused)
            focused ? "focused" : "defocused");
 }
 
-static void window_iconify_callback(GLFWwindow* window, int iconified)
+static void window_iconify_callback(GLFWindow* window, int iconified)
 {
     Slot* slot = glfwGetWindowUserPointer(window);
     printf("%08x to %i at %0.3f: Window was %s\n",
@@ -350,7 +350,7 @@ static void window_iconify_callback(GLFWwindow* window, int iconified)
            iconified ? "iconified" : "uniconified");
 }
 
-static void window_maximize_callback(GLFWwindow* window, int maximized)
+static void window_maximize_callback(GLFWindow* window, int maximized)
 {
     Slot* slot = glfwGetWindowUserPointer(window);
     printf("%08x to %i at %0.3f: Window was %s\n",
@@ -358,7 +358,7 @@ static void window_maximize_callback(GLFWwindow* window, int maximized)
            maximized ? "maximized" : "unmaximized");
 }
 
-static void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+static void mouse_button_callback(GLFWindow* window, int button, int action, int mods)
 {
     Slot* slot = glfwGetWindowUserPointer(window);
     printf("%08x to %i at %0.3f: Mouse button %i (%s) (with%s) was %s\n",
@@ -368,14 +368,14 @@ static void mouse_button_callback(GLFWwindow* window, int button, int action, in
            get_action_name(action));
 }
 
-static void cursor_position_callback(GLFWwindow* window, double x, double y)
+static void cursor_position_callback(GLFWindow* window, double x, double y)
 {
     Slot* slot = glfwGetWindowUserPointer(window);
     printf("%08x to %i at %0.3f: Cursor position: %f %f\n",
            counter++, slot->number, glfwGetTime(), x, y);
 }
 
-static void cursor_enter_callback(GLFWwindow* window, int entered)
+static void cursor_enter_callback(GLFWindow* window, int entered)
 {
     Slot* slot = glfwGetWindowUserPointer(window);
     printf("%08x to %i at %0.3f: Cursor %s window\n",
@@ -383,14 +383,14 @@ static void cursor_enter_callback(GLFWwindow* window, int entered)
            entered ? "entered" : "left");
 }
 
-static void scroll_callback(GLFWwindow* window, double x, double y)
+static void scroll_callback(GLFWindow* window, double x, double y)
 {
     Slot* slot = glfwGetWindowUserPointer(window);
     printf("%08x to %i at %0.3f: Scroll: %0.3f %0.3f\n",
            counter++, slot->number, glfwGetTime(), x, y);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWindow* window, int key, int scancode, int action, int mods)
 {
     Slot* slot = glfwGetWindowUserPointer(window);
     const char* name = glfwGetKeyName(key, scancode);
@@ -437,7 +437,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     }
 }
 
-static void char_callback(GLFWwindow* window, unsigned int codepoint)
+static void char_callback(GLFWindow* window, unsigned int codepoint)
 {
     Slot* slot = glfwGetWindowUserPointer(window);
     char string[5] = "";
@@ -447,7 +447,7 @@ static void char_callback(GLFWwindow* window, unsigned int codepoint)
            counter++, slot->number, glfwGetTime(), codepoint, string);
 }
 
-static void drop_callback(GLFWwindow* window, int count, const char* paths[])
+static void drop_callback(GLFWindow* window, int count, const char* paths[])
 {
     int i;
     Slot* slot = glfwGetWindowUserPointer(window);

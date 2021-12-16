@@ -381,7 +381,7 @@ static void drawAllViews(void)
 // Framebuffer size callback function
 //========================================================================
 
-static void framebufferSizeFun(GLFWwindow* window, int w, int h)
+static void framebufferSizeFun(GLFWindow* window, int w, int h)
 {
     width  = w;
     height = h > 0 ? h : 1;
@@ -393,7 +393,7 @@ static void framebufferSizeFun(GLFWwindow* window, int w, int h)
 // Window refresh callback function
 //========================================================================
 
-static void windowRefreshFun(GLFWwindow* window)
+static void windowRefreshFun(GLFWindow* window)
 {
     drawAllViews();
     glfwSwapBuffers(window);
@@ -405,7 +405,7 @@ static void windowRefreshFun(GLFWwindow* window)
 // Mouse position callback function
 //========================================================================
 
-static void cursorPosFun(GLFWwindow* window, double x, double y)
+static void cursorPosFun(GLFWindow* window, double x, double y)
 {
     int wnd_width, wnd_height, fb_width, fb_height;
     double scale;
@@ -451,7 +451,7 @@ static void cursorPosFun(GLFWwindow* window, double x, double y)
 // Mouse button callback function
 //========================================================================
 
-static void mouseButtonFun(GLFWwindow* window, int button, int action, int mods)
+static void mouseButtonFun(GLFWindow* window, int button, int action, int mods)
 {
     if ((button == GLFW_MOUSE_BUTTON_LEFT) && action == GLFW_PRESS)
     {
@@ -471,7 +471,7 @@ static void mouseButtonFun(GLFWwindow* window, int button, int action, int mods)
     do_redraw = 1;
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
@@ -484,7 +484,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 int main(void)
 {
-    GLFWwindow* window;
+    GLFWindow* window;
 
     // Initialise GLFW
     if (!glfwInit())

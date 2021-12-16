@@ -74,7 +74,7 @@ static void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
         return;
@@ -98,7 +98,7 @@ static void usage(void)
 int main(int argc, char** argv)
 {
     int ch, samples = 4;
-    GLFWwindow* window;
+    GLFWindow* window;
     GLuint vertex_buffer, vertex_shader, fragment_shader, program;
     GLint mvp_location, vpos_location;
 

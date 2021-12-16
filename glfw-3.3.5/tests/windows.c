@@ -69,7 +69,7 @@ static void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
         return;
@@ -96,7 +96,7 @@ int main(int argc, char** argv)
     int decorated = GLFW_FALSE;
     int focusOnShow = GLFW_TRUE;
     int running = GLFW_TRUE;
-    GLFWwindow* windows[4];
+    GLFWindow* windows[4];
 
     while ((ch = getopt(argc, argv, "bfh")) != -1)
     {

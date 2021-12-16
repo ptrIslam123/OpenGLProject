@@ -146,7 +146,7 @@ void init_grid(void)
 // Draw scene
 //========================================================================
 
-void draw_scene(GLFWwindow* window)
+void draw_scene(GLFWindow* window)
 {
     // Clear the color and depth buffers
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -272,7 +272,7 @@ static void error_callback(int error, const char* description)
 // Handle key strokes
 //========================================================================
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+void key_callback(GLFWindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
         return;
@@ -315,7 +315,7 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 // Callback function for mouse button events
 //========================================================================
 
-void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
+void mouse_button_callback(GLFWindow* window, int button, int action, int mods)
 {
     if (button != GLFW_MOUSE_BUTTON_LEFT)
         return;
@@ -334,7 +334,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
 // Callback function for cursor motion events
 //========================================================================
 
-void cursor_position_callback(GLFWwindow* window, double x, double y)
+void cursor_position_callback(GLFWindow* window, double x, double y)
 {
     if (glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED)
     {
@@ -351,7 +351,7 @@ void cursor_position_callback(GLFWwindow* window, double x, double y)
 // Callback function for scroll events
 //========================================================================
 
-void scroll_callback(GLFWwindow* window, double x, double y)
+void scroll_callback(GLFWindow* window, double x, double y)
 {
     zoom += (float) y / 4.f;
     if (zoom < 0)
@@ -363,7 +363,7 @@ void scroll_callback(GLFWwindow* window, double x, double y)
 // Callback function for framebuffer resize events
 //========================================================================
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void framebuffer_size_callback(GLFWindow* window, int width, int height)
 {
     float ratio = 1.f;
     mat4x4 projection;
@@ -390,7 +390,7 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 
 int main(int argc, char* argv[])
 {
-    GLFWwindow* window;
+    GLFWindow* window;
     double t, dt_total, t_old;
     int width, height;
 

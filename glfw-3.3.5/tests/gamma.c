@@ -54,7 +54,7 @@ static void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWindow* window, int key, int scancode, int action, int mods)
 {
     if (action == GLFW_PRESS && key == GLFW_KEY_ESCAPE)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
@@ -87,7 +87,7 @@ static void chart_ramp_array(struct nk_context* nk,
 int main(int argc, char** argv)
 {
     GLFWmonitor* monitor = NULL;
-    GLFWwindow* window;
+    GLFWindow* window;
     GLFWgammaramp orig_ramp;
     struct nk_context* nk;
     struct nk_font_atlas* atlas;

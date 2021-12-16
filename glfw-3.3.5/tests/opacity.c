@@ -49,7 +49,7 @@ static void error_callback(int error, const char* description)
 
 int main(int argc, char** argv)
 {
-    GLFWwindow* window;
+    GLFWindow* window;
     struct nk_context* nk;
     struct nk_font_atlas* atlas;
 

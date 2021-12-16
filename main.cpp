@@ -3,10 +3,9 @@
  
 #include <iostream>
  
-void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow *window);
+void framebuffer_size_callback(GLFWindow* window, int width, int height);
+void processInput(GLFWindow *window);
  
-// Константы
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
  
@@ -18,15 +17,8 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
  
-// Раскомментируйте данную часть кода, если используете macOS
-/*
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
-*/
- 
     // glfw: создание окна
-    GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "OpenGL for Ravesli.com", NULL, NULL);
+    GLFWindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "First simple OpenGl Window", NULL, NULL);
     if (window == NULL)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
@@ -64,14 +56,14 @@ int main()
 }
  
 // Обработка всех событий ввода: запрос GLFW о нажатии/отпускании клавиш на клавиатуре в данном кадре и соответствующая обработка данных событий
-void processInput(GLFWwindow *window)
+void processInput(GLFWindow *window)
 {
     if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 }
  
 // glfw: всякий раз, когда изменяются размеры окна (пользователем или операционной системой), вызывается данная callback-функция
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+void framebuffer_size_callback(GLFWindow* window, int width, int height)
 {
     // Убеждаемся, что окно просмотра соответствует новым размерам окна. 
 	// Обратите внимание, высота окна на Retina-дисплеях будет значительно больше, чем указано в программе

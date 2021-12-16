@@ -669,7 +669,7 @@ GLFWbool _glfwChooseVisualGLX(const _GLFWwndconfig* wndconfig,
 //////                        GLFW native API                       //////
 //////////////////////////////////////////////////////////////////////////
 
-GLFWAPI GLXContext glfwGetGLXContext(GLFWwindow* handle)
+GLFWAPI GLXContext glfwGetGLXContext(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
@@ -683,7 +683,7 @@ GLFWAPI GLXContext glfwGetGLXContext(GLFWwindow* handle)
     return window->context.glx.handle;
 }
 
-GLFWAPI GLXWindow glfwGetGLXWindow(GLFWwindow* handle)
+GLFWAPI GLXWindow glfwGetGLXWindow(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     _GLFW_REQUIRE_INIT_OR_RETURN(None);

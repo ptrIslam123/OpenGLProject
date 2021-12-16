@@ -782,7 +782,7 @@ GLFWbool _glfwCreateContextWGL(_GLFWwindow* window,
 //////                        GLFW native API                       //////
 //////////////////////////////////////////////////////////////////////////
 
-GLFWAPI HGLRC glfwGetWGLContext(GLFWwindow* handle)
+GLFWAPI HGLRC glfwGetWGLContext(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);

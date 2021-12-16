@@ -60,7 +60,7 @@ static int thread_main(void* data)
     return 0;
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
@@ -75,7 +75,7 @@ int main(void)
 {
     int result;
     thrd_t thread;
-    GLFWwindow* window;
+    GLFWindow* window;
 
     srand((unsigned int) time(NULL));
 

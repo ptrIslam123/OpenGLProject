@@ -61,7 +61,7 @@ void usage(void)
 struct nk_vec2 cursor_new, cursor_pos, cursor_vel;
 enum { cursor_sync_query, cursor_input_message } cursor_method = cursor_sync_query;
 
-void sample_input(GLFWwindow* window)
+void sample_input(GLFWindow* window)
 {
     float a = .25; // exponential smoothing factor
 
@@ -77,7 +77,7 @@ void sample_input(GLFWwindow* window)
     cursor_pos = cursor_new;
 }
 
-void cursor_pos_callback(GLFWwindow* window, double xpos, double ypos)
+void cursor_pos_callback(GLFWindow* window, double xpos, double ypos)
 {
     cursor_new.x = (float) xpos;
     cursor_new.y = (float) ypos;
@@ -96,7 +96,7 @@ int swap_occlusion_query = nk_false;
 int swap_read_pixels = nk_false;
 GLuint occlusion_query;
 
-void swap_buffers(GLFWwindow* window)
+void swap_buffers(GLFWindow* window)
 {
     glfwSwapBuffers(window);
 
@@ -129,7 +129,7 @@ void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+void key_callback(GLFWindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
         return;
@@ -157,7 +157,7 @@ int main(int argc, char** argv)
     double frame_rate = 0;
     int fullscreen = GLFW_FALSE;
     GLFWmonitor* monitor = NULL;
-    GLFWwindow* window;
+    GLFWindow* window;
     struct nk_context* nk;
     struct nk_font_atlas* atlas;
 

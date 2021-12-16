@@ -292,7 +292,7 @@ GLFWbool _glfwCreateContextOSMesa(_GLFWwindow* window,
 //////                        GLFW native API                       //////
 //////////////////////////////////////////////////////////////////////////
 
-GLFWAPI int glfwGetOSMesaColorBuffer(GLFWwindow* handle, int* width,
+GLFWAPI int glfwGetOSMesaColorBuffer(GLFWindow* handle, int* width,
                                      int* height, int* format, void** buffer)
 {
     void* mesaBuffer;
@@ -329,7 +329,7 @@ GLFWAPI int glfwGetOSMesaColorBuffer(GLFWwindow* handle, int* width,
     return GLFW_TRUE;
 }
 
-GLFWAPI int glfwGetOSMesaDepthBuffer(GLFWwindow* handle,
+GLFWAPI int glfwGetOSMesaDepthBuffer(GLFWindow* handle,
                                      int* width, int* height,
                                      int* bytesPerValue,
                                      void** buffer)
@@ -368,7 +368,7 @@ GLFWAPI int glfwGetOSMesaDepthBuffer(GLFWwindow* handle,
     return GLFW_TRUE;
 }
 
-GLFWAPI OSMesaContext glfwGetOSMesaContext(GLFWwindow* handle)
+GLFWAPI OSMesaContext glfwGetOSMesaContext(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);

@@ -1894,7 +1894,7 @@ GLFWAPI struct wl_display* glfwGetWaylandDisplay(void)
     return _glfw.wl.display;
 }
 
-GLFWAPI struct wl_surface* glfwGetWaylandWindow(GLFWwindow* handle)
+GLFWAPI struct wl_surface* glfwGetWaylandWindow(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);

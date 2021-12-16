@@ -67,7 +67,7 @@ const unsigned char icon_colors[5][4] =
 
 static int cur_icon_color = 0;
 
-static void set_icon(GLFWwindow* window, int icon_color)
+static void set_icon(GLFWindow* window, int icon_color)
 {
     int x, y;
     unsigned char pixels[16 * 16 * 4];
@@ -90,7 +90,7 @@ static void set_icon(GLFWwindow* window, int icon_color)
     glfwSetWindowIcon(window, 1, &img);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
         return;
@@ -112,7 +112,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 int main(int argc, char** argv)
 {
-    GLFWwindow* window;
+    GLFWindow* window;
 
     if (!glfwInit())
     {

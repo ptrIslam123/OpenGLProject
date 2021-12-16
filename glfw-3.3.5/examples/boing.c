@@ -50,10 +50,10 @@
 /* Prototypes */
 void init( void );
 void display( void );
-void reshape( GLFWwindow* window, int w, int h );
-void key_callback( GLFWwindow* window, int key, int scancode, int action, int mods );
-void mouse_button_callback( GLFWwindow* window, int button, int action, int mods );
-void cursor_position_callback( GLFWwindow* window, double x, double y );
+void reshape( GLFWindow* window, int w, int h );
+void key_callback( GLFWindow* window, int key, int scancode, int action, int mods );
+void mouse_button_callback( GLFWindow* window, int button, int action, int mods );
+void cursor_position_callback( GLFWindow* window, double x, double y );
 void DrawBoingBall( void );
 void BounceBall( double dt );
 void DrawBoingBallBand( GLfloat long_lo, GLfloat long_hi );
@@ -213,7 +213,7 @@ void display(void)
 /*****************************************************************************
  * reshape()
  *****************************************************************************/
-void reshape( GLFWwindow* window, int w, int h )
+void reshape( GLFWindow* window, int w, int h )
 {
    mat4x4 projection, view;
 
@@ -236,7 +236,7 @@ void reshape( GLFWwindow* window, int w, int h )
    glLoadMatrixf((const GLfloat*) view);
 }
 
-void key_callback( GLFWwindow* window, int key, int scancode, int action, int mods )
+void key_callback( GLFWindow* window, int key, int scancode, int action, int mods )
 {
     if (action != GLFW_PRESS)
         return;
@@ -272,7 +272,7 @@ static void set_ball_pos ( GLfloat x, GLfloat y )
    ball_y = y - (height / 2);
 }
 
-void mouse_button_callback( GLFWwindow* window, int button, int action, int mods )
+void mouse_button_callback( GLFWindow* window, int button, int action, int mods )
 {
    if (button != GLFW_MOUSE_BUTTON_LEFT)
       return;
@@ -288,7 +288,7 @@ void mouse_button_callback( GLFWwindow* window, int button, int action, int mods
    }
 }
 
-void cursor_position_callback( GLFWwindow* window, double x, double y )
+void cursor_position_callback( GLFWindow* window, double x, double y )
 {
    cursor_x = (float) x;
    cursor_y = (float) y;
@@ -622,7 +622,7 @@ void DrawGrid( void )
 
 int main( void )
 {
-   GLFWwindow* window;
+   GLFWindow* window;
 
    /* Init GLFW */
    if( !glfwInit() )

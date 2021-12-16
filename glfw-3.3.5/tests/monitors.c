@@ -78,14 +78,14 @@ static void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+static void framebuffer_size_callback(GLFWindow* window, int width, int height)
 {
     printf("Framebuffer resized to %ix%i\n", width, height);
 
     glViewport(0, 0, width, height);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE)
         glfwSetWindowShouldClose(window, GLFW_TRUE);
@@ -133,7 +133,7 @@ static void list_modes(GLFWmonitor* monitor)
 static void test_modes(GLFWmonitor* monitor)
 {
     int i, count;
-    GLFWwindow* window;
+    GLFWindow* window;
     const GLFWvidmode* modes = glfwGetVideoModes(monitor, &count);
 
     for (i = 0;  i < count;  i++)

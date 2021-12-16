@@ -357,7 +357,7 @@ int main(int argc, char** argv)
     GLint redbits, greenbits, bluebits, alphabits, depthbits, stencilbits;
     int list_extensions = GLFW_FALSE, list_layers = GLFW_FALSE;
     GLenum error;
-    GLFWwindow* window;
+    GLFWindow* window;
 
     enum { CLIENT, CONTEXT, BEHAVIOR, DEBUG_CONTEXT, FORWARD, HELP,
            EXTENSIONS, LAYERS,

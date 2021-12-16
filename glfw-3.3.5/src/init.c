@@ -67,7 +67,7 @@ static void terminate(void)
     memset(&_glfw.callbacks, 0, sizeof(_glfw.callbacks));
 
     while (_glfw.windowListHead)
-        glfwDestroyWindow((GLFWwindow*) _glfw.windowListHead);
+        glfwDestroyWindow((GLFWindow*) _glfw.windowListHead);
 
     while (_glfw.cursorListHead)
         glfwDestroyCursor((GLFWcursor*) _glfw.cursorListHead);

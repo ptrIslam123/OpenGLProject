@@ -40,7 +40,7 @@
 
 typedef struct
 {
-    GLFWwindow* window;
+    GLFWindow* window;
     const char* title;
     float r, g, b;
     thrd_t id;
@@ -53,7 +53,7 @@ static void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWindow* window, int key, int scancode, int action, int mods)
 {
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         glfwSetWindowShouldClose(window, GLFW_TRUE);

@@ -355,7 +355,7 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,
     window->context.client = GLFW_OPENGL_API;
 
     previous = _glfwPlatformGetTls(&_glfw.contextSlot);
-    glfwMakeContextCurrent((GLFWwindow*) window);
+    glfwMakeContextCurrent((GLFWindow*) window);
 
     window->context.GetIntegerv = (PFNGLGETINTEGERVPROC)
         window->context.getProcAddress("glGetIntegerv");
@@ -364,7 +364,7 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,
     if (!window->context.GetIntegerv || !window->context.GetString)
     {
         _glfwInputError(GLFW_PLATFORM_ERROR, "Entry point retrieval is broken");
-        glfwMakeContextCurrent((GLFWwindow*) previous);
+        glfwMakeContextCurrent((GLFWindow*) previous);
         return GLFW_FALSE;
     }
 
@@ -382,7 +382,7 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,
                             "OpenGL ES version string retrieval is broken");
         }
 
-        glfwMakeContextCurrent((GLFWwindow*) previous);
+        glfwMakeContextCurrent((GLFWindow*) previous);
         return GLFW_FALSE;
     }
 
@@ -414,7 +414,7 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,
                             "No version found in OpenGL ES version string");
         }
 
-        glfwMakeContextCurrent((GLFWwindow*) previous);
+        glfwMakeContextCurrent((GLFWindow*) previous);
         return GLFW_FALSE;
     }
 
@@ -444,7 +444,7 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,
                             window->context.major, window->context.minor);
         }
 
-        glfwMakeContextCurrent((GLFWwindow*) previous);
+        glfwMakeContextCurrent((GLFWindow*) previous);
         return GLFW_FALSE;
     }
 
@@ -460,7 +460,7 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,
         {
             _glfwInputError(GLFW_PLATFORM_ERROR,
                             "Entry point retrieval is broken");
-            glfwMakeContextCurrent((GLFWwindow*) previous);
+            glfwMakeContextCurrent((GLFWindow*) previous);
             return GLFW_FALSE;
         }
     }
@@ -569,7 +569,7 @@ GLFWbool _glfwRefreshContextAttribs(_GLFWwindow* window,
             window->context.swapBuffers(window);
     }
 
-    glfwMakeContextCurrent((GLFWwindow*) previous);
+    glfwMakeContextCurrent((GLFWindow*) previous);
     return GLFW_TRUE;
 }
 
@@ -606,7 +606,7 @@ GLFWbool _glfwStringInExtensionString(const char* string, const char* extensions
 //////                        GLFW public API                       //////
 //////////////////////////////////////////////////////////////////////////
 
-GLFWAPI void glfwMakeContextCurrent(GLFWwindow* handle)
+GLFWAPI void glfwMakeContextCurrent(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     _GLFWwindow* previous = _glfwPlatformGetTls(&_glfw.contextSlot);
@@ -630,13 +630,13 @@ GLFWAPI void glfwMakeContextCurrent(GLFWwindow* handle)
         window->context.makeCurrent(window);
 }
 
-GLFWAPI GLFWwindow* glfwGetCurrentContext(void)
+GLFWAPI GLFWindow* glfwGetCurrentContext(void)
 {
     _GLFW_REQUIRE_INIT_OR_RETURN(NULL);
     return _glfwPlatformGetTls(&_glfw.contextSlot);
 }
 
-GLFWAPI void glfwSwapBuffers(GLFWwindow* handle)
+GLFWAPI void glfwSwapBuffers(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);

@@ -53,7 +53,7 @@
 #define strdup(x) _strdup(x)
 #endif
 
-static GLFWwindow* window;
+static GLFWindow* window;
 static int joysticks[GLFW_JOYSTICK_LAST + 1];
 static int joystick_count = 0;
 
@@ -86,7 +86,7 @@ static void joystick_callback(int jid, int event)
         glfwRequestWindowAttention(window);
 }
 
-static void drop_callback(GLFWwindow* window, int count, const char* paths[])
+static void drop_callback(GLFWindow* window, int count, const char* paths[])
 {
     int i;
 

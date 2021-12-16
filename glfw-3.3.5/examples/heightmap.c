@@ -381,7 +381,7 @@ static void update_mesh(void)
  * GLFW callback functions
  *********************************************************************/
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWindow* window, int key, int scancode, int action, int mods)
 {
     switch(key)
     {
@@ -399,7 +399,7 @@ static void error_callback(int error, const char* description)
 
 int main(int argc, char** argv)
 {
-    GLFWwindow* window;
+    GLFWindow* window;
     int iter;
     double dt;
     double last_update_time;

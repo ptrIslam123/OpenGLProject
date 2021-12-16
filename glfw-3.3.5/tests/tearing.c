@@ -69,7 +69,7 @@ static int swap_tear;
 static int swap_interval;
 static double frame_rate;
 
-static void update_window_title(GLFWwindow* window)
+static void update_window_title(GLFWindow* window)
 {
     char title[256];
 
@@ -81,7 +81,7 @@ static void update_window_title(GLFWwindow* window)
     glfwSetWindowTitle(window, title);
 }
 
-static void set_swap_interval(GLFWwindow* window, int interval)
+static void set_swap_interval(GLFWindow* window, int interval)
 {
     swap_interval = interval;
     glfwSwapInterval(swap_interval);
@@ -93,7 +93,7 @@ static void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWindow* window, int key, int scancode, int action, int mods)
 {
     if (action != GLFW_PRESS)
         return;
@@ -156,7 +156,7 @@ int main(int argc, char** argv)
 {
     unsigned long frame_count = 0;
     double last_time, current_time;
-    GLFWwindow* window;
+    GLFWindow* window;
     GLuint vertex_buffer, vertex_shader, fragment_shader, program;
     GLint mvp_location, vpos_location;
 

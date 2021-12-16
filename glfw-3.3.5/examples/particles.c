@@ -391,7 +391,7 @@ static void particle_engine(double t, float dt)
                             // the L1 data cache on most CPUs)
 #define PARTICLE_VERTS  4   // Number of vertices per particle
 
-static void draw_particles(GLFWwindow* window, double t, float dt)
+static void draw_particles(GLFWindow* window, double t, float dt)
 {
     int i, particle_count;
     Vertex vertex_array[BATCH_PARTICLES * PARTICLE_VERTS];
@@ -784,7 +784,7 @@ static void setup_lights(void)
 // Main rendering function
 //========================================================================
 
-static void draw_scene(GLFWwindow* window, double t)
+static void draw_scene(GLFWindow* window, double t)
 {
     double xpos, ypos, zpos, angle_x, angle_y, angle_z;
     static double t_old = 0.0;
@@ -861,7 +861,7 @@ static void draw_scene(GLFWwindow* window, double t)
 // Window resize callback function
 //========================================================================
 
-static void resize_callback(GLFWwindow* window, int width, int height)
+static void resize_callback(GLFWindow* window, int width, int height)
 {
     glViewport(0, 0, width, height);
     aspect_ratio = height ? width / (float) height : 1.f;
@@ -872,7 +872,7 @@ static void resize_callback(GLFWwindow* window, int width, int height)
 // Key callback functions
 //========================================================================
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWindow* window, int key, int scancode, int action, int mods)
 {
     if (action == GLFW_PRESS)
     {
@@ -899,7 +899,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 static int physics_thread_main(void* arg)
 {
-    GLFWwindow* window = arg;
+    GLFWindow* window = arg;
 
     for (;;)
     {
@@ -943,7 +943,7 @@ int main(int argc, char** argv)
 {
     int ch, width, height;
     thrd_t physics_thread = 0;
-    GLFWwindow* window;
+    GLFWindow* window;
     GLFWmonitor* monitor = NULL;
 
     if (!glfwInit())

@@ -45,7 +45,7 @@
 void _glfwInputWindowFocus(_GLFWwindow* window, GLFWbool focused)
 {
     if (window->callbacks.focus)
-        window->callbacks.focus((GLFWwindow*) window, focused);
+        window->callbacks.focus((GLFWindow*) window, focused);
 
     if (!focused)
     {
@@ -74,7 +74,7 @@ void _glfwInputWindowFocus(_GLFWwindow* window, GLFWbool focused)
 void _glfwInputWindowPos(_GLFWwindow* window, int x, int y)
 {
     if (window->callbacks.pos)
-        window->callbacks.pos((GLFWwindow*) window, x, y);
+        window->callbacks.pos((GLFWindow*) window, x, y);
 }
 
 // Notifies shared code that a window has been resized
@@ -83,7 +83,7 @@ void _glfwInputWindowPos(_GLFWwindow* window, int x, int y)
 void _glfwInputWindowSize(_GLFWwindow* window, int width, int height)
 {
     if (window->callbacks.size)
-        window->callbacks.size((GLFWwindow*) window, width, height);
+        window->callbacks.size((GLFWindow*) window, width, height);
 }
 
 // Notifies shared code that a window has been iconified or restored
@@ -91,7 +91,7 @@ void _glfwInputWindowSize(_GLFWwindow* window, int width, int height)
 void _glfwInputWindowIconify(_GLFWwindow* window, GLFWbool iconified)
 {
     if (window->callbacks.iconify)
-        window->callbacks.iconify((GLFWwindow*) window, iconified);
+        window->callbacks.iconify((GLFWindow*) window, iconified);
 }
 
 // Notifies shared code that a window has been maximized or restored
@@ -99,7 +99,7 @@ void _glfwInputWindowIconify(_GLFWwindow* window, GLFWbool iconified)
 void _glfwInputWindowMaximize(_GLFWwindow* window, GLFWbool maximized)
 {
     if (window->callbacks.maximize)
-        window->callbacks.maximize((GLFWwindow*) window, maximized);
+        window->callbacks.maximize((GLFWindow*) window, maximized);
 }
 
 // Notifies shared code that a window framebuffer has been resized
@@ -108,7 +108,7 @@ void _glfwInputWindowMaximize(_GLFWwindow* window, GLFWbool maximized)
 void _glfwInputFramebufferSize(_GLFWwindow* window, int width, int height)
 {
     if (window->callbacks.fbsize)
-        window->callbacks.fbsize((GLFWwindow*) window, width, height);
+        window->callbacks.fbsize((GLFWindow*) window, width, height);
 }
 
 // Notifies shared code that a window content scale has changed
@@ -117,7 +117,7 @@ void _glfwInputFramebufferSize(_GLFWwindow* window, int width, int height)
 void _glfwInputWindowContentScale(_GLFWwindow* window, float xscale, float yscale)
 {
     if (window->callbacks.scale)
-        window->callbacks.scale((GLFWwindow*) window, xscale, yscale);
+        window->callbacks.scale((GLFWindow*) window, xscale, yscale);
 }
 
 // Notifies shared code that the window contents needs updating
@@ -125,7 +125,7 @@ void _glfwInputWindowContentScale(_GLFWwindow* window, float xscale, float yscal
 void _glfwInputWindowDamage(_GLFWwindow* window)
 {
     if (window->callbacks.refresh)
-        window->callbacks.refresh((GLFWwindow*) window);
+        window->callbacks.refresh((GLFWindow*) window);
 }
 
 // Notifies shared code that the user wishes to close a window
@@ -135,7 +135,7 @@ void _glfwInputWindowCloseRequest(_GLFWwindow* window)
     window->shouldClose = GLFW_TRUE;
 
     if (window->callbacks.close)
-        window->callbacks.close((GLFWwindow*) window);
+        window->callbacks.close((GLFWindow*) window);
 }
 
 // Notifies shared code that a window has changed its desired monitor
@@ -149,10 +149,10 @@ void _glfwInputWindowMonitor(_GLFWwindow* window, _GLFWmonitor* monitor)
 //////                        GLFW public API                       //////
 //////////////////////////////////////////////////////////////////////////
 
-GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height,
+GLFWAPI GLFWindow* glfwCreateWindow(int width, int height,
                                      const char* title,
                                      GLFWmonitor* monitor,
-                                     GLFWwindow* share)
+                                     GLFWindow* share)
 {
     _GLFWfbconfig fbconfig;
     _GLFWctxconfig ctxconfig;
@@ -217,7 +217,7 @@ GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height,
     // Open the actual window and create its context
     if (!_glfwPlatformCreateWindow(window, &wndconfig, &ctxconfig, &fbconfig))
     {
-        glfwDestroyWindow((GLFWwindow*) window);
+        glfwDestroyWindow((GLFWindow*) window);
         return NULL;
     }
 
@@ -225,7 +225,7 @@ GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height,
     {
         if (!_glfwRefreshContextAttribs(window, &ctxconfig))
         {
-            glfwDestroyWindow((GLFWwindow*) window);
+            glfwDestroyWindow((GLFWindow*) window);
             return NULL;
         }
     }
@@ -245,7 +245,7 @@ GLFWAPI GLFWwindow* glfwCreateWindow(int width, int height,
         }
     }
 
-    return (GLFWwindow*) window;
+    return (GLFWindow*) window;
 }
 
 void glfwDefaultWindowHints(void)
@@ -440,7 +440,7 @@ GLFWAPI void glfwWindowHintString(int hint, const char* value)
     _glfwInputError(GLFW_INVALID_ENUM, "Invalid window hint string 0x%08X", hint);
 }
 
-GLFWAPI void glfwDestroyWindow(GLFWwindow* handle)
+GLFWAPI void glfwDestroyWindow(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
 
@@ -473,7 +473,7 @@ GLFWAPI void glfwDestroyWindow(GLFWwindow* handle)
     free(window);
 }
 
-GLFWAPI int glfwWindowShouldClose(GLFWwindow* handle)
+GLFWAPI int glfwWindowShouldClose(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -482,7 +482,7 @@ GLFWAPI int glfwWindowShouldClose(GLFWwindow* handle)
     return window->shouldClose;
 }
 
-GLFWAPI void glfwSetWindowShouldClose(GLFWwindow* handle, int value)
+GLFWAPI void glfwSetWindowShouldClose(GLFWindow* handle, int value)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -491,7 +491,7 @@ GLFWAPI void glfwSetWindowShouldClose(GLFWwindow* handle, int value)
     window->shouldClose = value;
 }
 
-GLFWAPI void glfwSetWindowTitle(GLFWwindow* handle, const char* title)
+GLFWAPI void glfwSetWindowTitle(GLFWindow* handle, const char* title)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -501,7 +501,7 @@ GLFWAPI void glfwSetWindowTitle(GLFWwindow* handle, const char* title)
     _glfwPlatformSetWindowTitle(window, title);
 }
 
-GLFWAPI void glfwSetWindowIcon(GLFWwindow* handle,
+GLFWAPI void glfwSetWindowIcon(GLFWindow* handle,
                                int count, const GLFWimage* images)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
@@ -513,7 +513,7 @@ GLFWAPI void glfwSetWindowIcon(GLFWwindow* handle,
     _glfwPlatformSetWindowIcon(window, count, images);
 }
 
-GLFWAPI void glfwGetWindowPos(GLFWwindow* handle, int* xpos, int* ypos)
+GLFWAPI void glfwGetWindowPos(GLFWindow* handle, int* xpos, int* ypos)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -527,7 +527,7 @@ GLFWAPI void glfwGetWindowPos(GLFWwindow* handle, int* xpos, int* ypos)
     _glfwPlatformGetWindowPos(window, xpos, ypos);
 }
 
-GLFWAPI void glfwSetWindowPos(GLFWwindow* handle, int xpos, int ypos)
+GLFWAPI void glfwSetWindowPos(GLFWindow* handle, int xpos, int ypos)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -540,7 +540,7 @@ GLFWAPI void glfwSetWindowPos(GLFWwindow* handle, int xpos, int ypos)
     _glfwPlatformSetWindowPos(window, xpos, ypos);
 }
 
-GLFWAPI void glfwGetWindowSize(GLFWwindow* handle, int* width, int* height)
+GLFWAPI void glfwGetWindowSize(GLFWindow* handle, int* width, int* height)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -554,7 +554,7 @@ GLFWAPI void glfwGetWindowSize(GLFWwindow* handle, int* width, int* height)
     _glfwPlatformGetWindowSize(window, width, height);
 }
 
-GLFWAPI void glfwSetWindowSize(GLFWwindow* handle, int width, int height)
+GLFWAPI void glfwSetWindowSize(GLFWindow* handle, int width, int height)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -569,7 +569,7 @@ GLFWAPI void glfwSetWindowSize(GLFWwindow* handle, int width, int height)
     _glfwPlatformSetWindowSize(window, width, height);
 }
 
-GLFWAPI void glfwSetWindowSizeLimits(GLFWwindow* handle,
+GLFWAPI void glfwSetWindowSizeLimits(GLFWindow* handle,
                                      int minwidth, int minheight,
                                      int maxwidth, int maxheight)
 {
@@ -614,7 +614,7 @@ GLFWAPI void glfwSetWindowSizeLimits(GLFWwindow* handle,
                                      maxwidth, maxheight);
 }
 
-GLFWAPI void glfwSetWindowAspectRatio(GLFWwindow* handle, int numer, int denom)
+GLFWAPI void glfwSetWindowAspectRatio(GLFWindow* handle, int numer, int denom)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -643,7 +643,7 @@ GLFWAPI void glfwSetWindowAspectRatio(GLFWwindow* handle, int numer, int denom)
     _glfwPlatformSetWindowAspectRatio(window, numer, denom);
 }
 
-GLFWAPI void glfwGetFramebufferSize(GLFWwindow* handle, int* width, int* height)
+GLFWAPI void glfwGetFramebufferSize(GLFWindow* handle, int* width, int* height)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -657,7 +657,7 @@ GLFWAPI void glfwGetFramebufferSize(GLFWwindow* handle, int* width, int* height)
     _glfwPlatformGetFramebufferSize(window, width, height);
 }
 
-GLFWAPI void glfwGetWindowFrameSize(GLFWwindow* handle,
+GLFWAPI void glfwGetWindowFrameSize(GLFWindow* handle,
                                     int* left, int* top,
                                     int* right, int* bottom)
 {
@@ -677,7 +677,7 @@ GLFWAPI void glfwGetWindowFrameSize(GLFWwindow* handle,
     _glfwPlatformGetWindowFrameSize(window, left, top, right, bottom);
 }
 
-GLFWAPI void glfwGetWindowContentScale(GLFWwindow* handle,
+GLFWAPI void glfwGetWindowContentScale(GLFWindow* handle,
                                        float* xscale, float* yscale)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
@@ -692,7 +692,7 @@ GLFWAPI void glfwGetWindowContentScale(GLFWwindow* handle,
     _glfwPlatformGetWindowContentScale(window, xscale, yscale);
 }
 
-GLFWAPI float glfwGetWindowOpacity(GLFWwindow* handle)
+GLFWAPI float glfwGetWindowOpacity(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -701,7 +701,7 @@ GLFWAPI float glfwGetWindowOpacity(GLFWwindow* handle)
     return _glfwPlatformGetWindowOpacity(window);
 }
 
-GLFWAPI void glfwSetWindowOpacity(GLFWwindow* handle, float opacity)
+GLFWAPI void glfwSetWindowOpacity(GLFWindow* handle, float opacity)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -720,7 +720,7 @@ GLFWAPI void glfwSetWindowOpacity(GLFWwindow* handle, float opacity)
     _glfwPlatformSetWindowOpacity(window, opacity);
 }
 
-GLFWAPI void glfwIconifyWindow(GLFWwindow* handle)
+GLFWAPI void glfwIconifyWindow(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -729,7 +729,7 @@ GLFWAPI void glfwIconifyWindow(GLFWwindow* handle)
     _glfwPlatformIconifyWindow(window);
 }
 
-GLFWAPI void glfwRestoreWindow(GLFWwindow* handle)
+GLFWAPI void glfwRestoreWindow(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -738,7 +738,7 @@ GLFWAPI void glfwRestoreWindow(GLFWwindow* handle)
     _glfwPlatformRestoreWindow(window);
 }
 
-GLFWAPI void glfwMaximizeWindow(GLFWwindow* handle)
+GLFWAPI void glfwMaximizeWindow(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -751,7 +751,7 @@ GLFWAPI void glfwMaximizeWindow(GLFWwindow* handle)
     _glfwPlatformMaximizeWindow(window);
 }
 
-GLFWAPI void glfwShowWindow(GLFWwindow* handle)
+GLFWAPI void glfwShowWindow(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -767,7 +767,7 @@ GLFWAPI void glfwShowWindow(GLFWwindow* handle)
         _glfwPlatformFocusWindow(window);
 }
 
-GLFWAPI void glfwRequestWindowAttention(GLFWwindow* handle)
+GLFWAPI void glfwRequestWindowAttention(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -777,7 +777,7 @@ GLFWAPI void glfwRequestWindowAttention(GLFWwindow* handle)
     _glfwPlatformRequestWindowAttention(window);
 }
 
-GLFWAPI void glfwHideWindow(GLFWwindow* handle)
+GLFWAPI void glfwHideWindow(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -790,7 +790,7 @@ GLFWAPI void glfwHideWindow(GLFWwindow* handle)
     _glfwPlatformHideWindow(window);
 }
 
-GLFWAPI void glfwFocusWindow(GLFWwindow* handle)
+GLFWAPI void glfwFocusWindow(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -800,7 +800,7 @@ GLFWAPI void glfwFocusWindow(GLFWwindow* handle)
     _glfwPlatformFocusWindow(window);
 }
 
-GLFWAPI int glfwGetWindowAttrib(GLFWwindow* handle, int attrib)
+GLFWAPI int glfwGetWindowAttrib(GLFWindow* handle, int attrib)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -859,7 +859,7 @@ GLFWAPI int glfwGetWindowAttrib(GLFWwindow* handle, int attrib)
     return 0;
 }
 
-GLFWAPI void glfwSetWindowAttrib(GLFWwindow* handle, int attrib, int value)
+GLFWAPI void glfwSetWindowAttrib(GLFWindow* handle, int attrib, int value)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -903,7 +903,7 @@ GLFWAPI void glfwSetWindowAttrib(GLFWwindow* handle, int attrib, int value)
         _glfwInputError(GLFW_INVALID_ENUM, "Invalid window attribute 0x%08X", attrib);
 }
 
-GLFWAPI GLFWmonitor* glfwGetWindowMonitor(GLFWwindow* handle)
+GLFWAPI GLFWmonitor* glfwGetWindowMonitor(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -912,7 +912,7 @@ GLFWAPI GLFWmonitor* glfwGetWindowMonitor(GLFWwindow* handle)
     return (GLFWmonitor*) window->monitor;
 }
 
-GLFWAPI void glfwSetWindowMonitor(GLFWwindow* wh,
+GLFWAPI void glfwSetWindowMonitor(GLFWindow* wh,
                                   GLFWmonitor* mh,
                                   int xpos, int ypos,
                                   int width, int height,
@@ -951,7 +951,7 @@ GLFWAPI void glfwSetWindowMonitor(GLFWwindow* wh,
                                   refreshRate);
 }
 
-GLFWAPI void glfwSetWindowUserPointer(GLFWwindow* handle, void* pointer)
+GLFWAPI void glfwSetWindowUserPointer(GLFWindow* handle, void* pointer)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -960,7 +960,7 @@ GLFWAPI void glfwSetWindowUserPointer(GLFWwindow* handle, void* pointer)
     window->userPointer = pointer;
 }
 
-GLFWAPI void* glfwGetWindowUserPointer(GLFWwindow* handle)
+GLFWAPI void* glfwGetWindowUserPointer(GLFWindow* handle)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
     assert(window != NULL);
@@ -969,7 +969,7 @@ GLFWAPI void* glfwGetWindowUserPointer(GLFWwindow* handle)
     return window->userPointer;
 }
 
-GLFWAPI GLFWwindowposfun glfwSetWindowPosCallback(GLFWwindow* handle,
+GLFWAPI GLFWwindowposfun glfwSetWindowPosCallback(GLFWindow* handle,
                                                   GLFWwindowposfun cbfun)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
@@ -980,7 +980,7 @@ GLFWAPI GLFWwindowposfun glfwSetWindowPosCallback(GLFWwindow* handle,
     return cbfun;
 }
 
-GLFWAPI GLFWwindowsizefun glfwSetWindowSizeCallback(GLFWwindow* handle,
+GLFWAPI GLFWwindowsizefun glfwSetWindowSizeCallback(GLFWindow* handle,
                                                     GLFWwindowsizefun cbfun)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
@@ -991,7 +991,7 @@ GLFWAPI GLFWwindowsizefun glfwSetWindowSizeCallback(GLFWwindow* handle,
     return cbfun;
 }
 
-GLFWAPI GLFWwindowclosefun glfwSetWindowCloseCallback(GLFWwindow* handle,
+GLFWAPI GLFWwindowclosefun glfwSetWindowCloseCallback(GLFWindow* handle,
                                                       GLFWwindowclosefun cbfun)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
@@ -1002,7 +1002,7 @@ GLFWAPI GLFWwindowclosefun glfwSetWindowCloseCallback(GLFWwindow* handle,
     return cbfun;
 }
 
-GLFWAPI GLFWwindowrefreshfun glfwSetWindowRefreshCallback(GLFWwindow* handle,
+GLFWAPI GLFWwindowrefreshfun glfwSetWindowRefreshCallback(GLFWindow* handle,
                                                           GLFWwindowrefreshfun cbfun)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
@@ -1013,7 +1013,7 @@ GLFWAPI GLFWwindowrefreshfun glfwSetWindowRefreshCallback(GLFWwindow* handle,
     return cbfun;
 }
 
-GLFWAPI GLFWwindowfocusfun glfwSetWindowFocusCallback(GLFWwindow* handle,
+GLFWAPI GLFWwindowfocusfun glfwSetWindowFocusCallback(GLFWindow* handle,
                                                       GLFWwindowfocusfun cbfun)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
@@ -1024,7 +1024,7 @@ GLFWAPI GLFWwindowfocusfun glfwSetWindowFocusCallback(GLFWwindow* handle,
     return cbfun;
 }
 
-GLFWAPI GLFWwindowiconifyfun glfwSetWindowIconifyCallback(GLFWwindow* handle,
+GLFWAPI GLFWwindowiconifyfun glfwSetWindowIconifyCallback(GLFWindow* handle,
                                                           GLFWwindowiconifyfun cbfun)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
@@ -1035,7 +1035,7 @@ GLFWAPI GLFWwindowiconifyfun glfwSetWindowIconifyCallback(GLFWwindow* handle,
     return cbfun;
 }
 
-GLFWAPI GLFWwindowmaximizefun glfwSetWindowMaximizeCallback(GLFWwindow* handle,
+GLFWAPI GLFWwindowmaximizefun glfwSetWindowMaximizeCallback(GLFWindow* handle,
                                                             GLFWwindowmaximizefun cbfun)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
@@ -1046,7 +1046,7 @@ GLFWAPI GLFWwindowmaximizefun glfwSetWindowMaximizeCallback(GLFWwindow* handle,
     return cbfun;
 }
 
-GLFWAPI GLFWframebuffersizefun glfwSetFramebufferSizeCallback(GLFWwindow* handle,
+GLFWAPI GLFWframebuffersizefun glfwSetFramebufferSizeCallback(GLFWindow* handle,
                                                               GLFWframebuffersizefun cbfun)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;
@@ -1057,7 +1057,7 @@ GLFWAPI GLFWframebuffersizefun glfwSetFramebufferSizeCallback(GLFWwindow* handle
     return cbfun;
 }
 
-GLFWAPI GLFWwindowcontentscalefun glfwSetWindowContentScaleCallback(GLFWwindow* handle,
+GLFWAPI GLFWwindowcontentscalefun glfwSetWindowContentScaleCallback(GLFWindow* handle,
                                                                     GLFWwindowcontentscalefun cbfun)
 {
     _GLFWwindow* window = (_GLFWwindow*) handle;

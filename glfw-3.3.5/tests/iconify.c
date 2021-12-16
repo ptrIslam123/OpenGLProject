@@ -53,7 +53,7 @@ static void error_callback(int error, const char* description)
     fprintf(stderr, "Error: %s\n", description);
 }
 
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+static void key_callback(GLFWindow* window, int key, int scancode, int action, int mods)
 {
     printf("%0.2f Key %s\n",
            glfwGetTime(),
@@ -120,38 +120,38 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
     }
 }
 
-static void window_size_callback(GLFWwindow* window, int width, int height)
+static void window_size_callback(GLFWindow* window, int width, int height)
 {
     printf("%0.2f Window resized to %ix%i\n", glfwGetTime(), width, height);
 }
 
-static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+static void framebuffer_size_callback(GLFWindow* window, int width, int height)
 {
     printf("%0.2f Framebuffer resized to %ix%i\n", glfwGetTime(), width, height);
 }
 
-static void window_focus_callback(GLFWwindow* window, int focused)
+static void window_focus_callback(GLFWindow* window, int focused)
 {
     printf("%0.2f Window %s\n",
            glfwGetTime(),
            focused ? "focused" : "defocused");
 }
 
-static void window_iconify_callback(GLFWwindow* window, int iconified)
+static void window_iconify_callback(GLFWindow* window, int iconified)
 {
     printf("%0.2f Window %s\n",
            glfwGetTime(),
            iconified ? "iconified" : "uniconified");
 }
 
-static void window_maximize_callback(GLFWwindow* window, int maximized)
+static void window_maximize_callback(GLFWindow* window, int maximized)
 {
     printf("%0.2f Window %s\n",
            glfwGetTime(),
            maximized ? "maximized" : "unmaximized");
 }
 
-static void window_refresh_callback(GLFWwindow* window)
+static void window_refresh_callback(GLFWindow* window)
 {
     printf("%0.2f Window refresh\n", glfwGetTime());
 
@@ -161,10 +161,10 @@ static void window_refresh_callback(GLFWwindow* window)
     glfwSwapBuffers(window);
 }
 
-static GLFWwindow* create_window(GLFWmonitor* monitor)
+static GLFWindow* create_window(GLFWmonitor* monitor)
 {
     int width, height;
-    GLFWwindow* window;
+    GLFWindow* window;
 
     if (monitor)
     {
@@ -201,7 +201,7 @@ int main(int argc, char** argv)
 {
     int ch, i, window_count;
     int fullscreen = GLFW_FALSE, all_monitors = GLFW_FALSE;
-    GLFWwindow** windows;
+    GLFWindow** windows;
 
     while ((ch = getopt(argc, argv, "afhn")) != -1)
     {
@@ -236,7 +236,7 @@ int main(int argc, char** argv)
         GLFWmonitor** monitors = glfwGetMonitors(&monitor_count);
 
         window_count = monitor_count;
-        windows = calloc(window_count, sizeof(GLFWwindow*));
+        windows = calloc(window_count, sizeof(GLFWindow*));
 
         for (i = 0;  i < monitor_count;  i++)
         {
@@ -253,7 +253,7 @@ int main(int argc, char** argv)
             monitor = glfwGetPrimaryMonitor();
 
         window_count = 1;
-        windows = calloc(window_count, sizeof(GLFWwindow*));
+        windows = calloc(window_count, sizeof(GLFWindow*));
         windows[0] = create_window(monitor);
     }
 
