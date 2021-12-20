@@ -98,24 +98,31 @@ int main()
 
 
 
-
     /** Генерация буфера на GPU и заполнения буфера данными о вершинах **/
 
     unsigned int vertexBuffer = 0;
     unsigned int vertexArray = 0;
     unsigned int vertexSize = 3;
     unsigned int colorSize = 3;
-    unsigned int vertexeCount = vertexSize * 2;
+    unsigned int vertexeCount = vertexSize * 4;
 
     float vertices[] = {
-        // position         color
-        1.0f, 1.0f, 0.0f,   1.0f, 0.0f, 0.0f,
+        // positions         colors
+        1.0f, 1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   // 1 triangle
         0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
         1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f,
 
-        0.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,   // 2 triangle
         1.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f,  0.0f, 0.0f, 1.0f
+        1.0f, -1.0f, 0.0f,  0.0f, 0.0f, 1.0f,
+
+        -1.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,   // 3 triangle
+        0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+        -1.0f, 0.0f, 0.0f,  0.0f, 0.0f, 1.0f,
+
+        -1.0f, 0.0f, 0.0f,  1.0f, 0.0f, 0.0f,   // 4 triangle
+        0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+        -1.0f, -1.0f, 0.0f,  0.0f, 0.0f, 1.0f
     };
 
     glGenBuffers(1, &vertexBuffer);
@@ -125,10 +132,10 @@ int main()
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glBindVertexArray(vertexArray);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)0);
+    glVertexAttribPointer(0, vertexSize, GL_FLOAT, GL_FALSE, sizeof(float) * (vertexSize + colorSize), (void*)0);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)(sizeof(float) * 3));
+    glVertexAttribPointer(1, colorSize, GL_FLOAT, GL_FALSE, sizeof(float) * (vertexSize + colorSize), (void*)(sizeof(float) * vertexSize));
     glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);
