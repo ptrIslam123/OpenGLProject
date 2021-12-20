@@ -99,40 +99,48 @@ int main()
 
     /** Генерация буфера на GPU и заполнения буфера данными о вершинах **/
     unsigned int vertexBufferObject = 0;
+    unsigned int elementBufferObject = 0;
     unsigned int colorBufferObject = 0;
     unsigned int colorArrayObject = 0;
     unsigned int vertexArrayObject = 0;
+    unsigned int vertexSize = 3;
+    unsigned int colorSize = 3;
+    unsigned int indexSize = 3;
+    unsigned int vertexCounter = 6;
+
     
-    float vertexes[] = {
-        0.5f, 1.0f, 0.0f,
-        -1.0f, -1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f
+    float vertices[] = {
+        // unique vertex coordinate |   vertex color
+        0.5f, 0.5f, 0.0f,               1.0f, 0.0f, 0.0f,
+        0.5f, -0.5f, 0.0f,              0.0f, 1.0f, 0.0f,
+        -0.5f, -0.5f, 0.0f,             0.0f, 0.0f, 1.0f,
+        -0.5f, 0.5f, 0.0f,              0.0f, 0.0f, 0.0f
     };
 
-    float colors[] = {
-        1.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 1.0f
+    unsigned int indices[] = {
+        2, 3, 0,
+        0, 1, 2
     };
 
     glGenBuffers(1, &vertexBufferObject);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexes), vertexes, GL_STREAM_DRAW);
-
-    glGenBuffers(1, &colorBufferObject);
-    glBindBuffer(GL_ARRAY_BUFFER, colorBufferObject);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STREAM_DRAW);
-
+    glGenBuffers(1, &elementBufferObject);
     glGenVertexArrays(1, &vertexArrayObject);
-    glBindVertexArray(vertexArrayObject);
 
-    glEnableVertexAttribArray(0);
+    glBindVertexArray(vertexArrayObject);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
- 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferObject);
+    
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, vertexSize, GL_FLOAT, GL_FALSE, sizeof(float) * (vertexSize + colorSize), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, colorSize, GL_FLOAT, GL_FALSE, sizeof(float) * (vertexSize + colorSize), (void*)(sizeof(float) * vertexSize));
     glEnableVertexAttribArray(1);
-    glBindBuffer(GL_ARRAY_BUFFER, colorBufferObject);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+    glBindVertexArray(0);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -143,8 +151,7 @@ int main()
  
         glUseProgram(shader);
         glBindVertexArray(vertexArrayObject);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-
+        glDrawElements(GL_TRIANGLES, vertexCounter, GL_UNSIGNED_INT, 0);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
