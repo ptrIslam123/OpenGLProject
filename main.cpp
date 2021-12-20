@@ -105,12 +105,17 @@ int main()
     unsigned int vertexArray = 0;
     unsigned int vertexSize = 3;
     unsigned int colorSize = 3;
-    unsigned int vertexeCount = vertexSize * 1;
+    unsigned int vertexeCount = vertexSize * 2;
 
     float vertices[] = {
+        // position         color
         1.0f, 1.0f, 0.0f,   1.0f, 0.0f, 0.0f,
         0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f
+        1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f,
+
+        0.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+        1.0f, -1.0f, 0.0f,  0.0f, 0.0f, 1.0f
     };
 
     glGenBuffers(1, &vertexBuffer);
