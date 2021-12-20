@@ -103,26 +103,26 @@ int main()
     unsigned int vertexBuffer = 0;
     unsigned int vertexArray = 0;
     unsigned int vertexSize = 3;
-    unsigned int colorSize = 3;
+    unsigned int colorSize = 4;
     unsigned int vertexeCount = vertexSize * 4;
 
     float vertices[] = {
-        // positions         colors
-        1.0f, 1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   // 1 triangle
-        0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f,
+        // positions         colors (rgba format)
+        1.0f, 1.0f, 0.0f,   1.0f, 0.0f, 0.0f, 1.0f,   // 1 triangle
+        0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 1.0f,
+        1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f, 1.0f,
 
-        0.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,   // 2 triangle
-        1.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-        1.0f, -1.0f, 0.0f,  0.0f, 0.0f, 1.0f,
+        0.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f, 1.0f,  // 2 triangle
+        1.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 1.0f,
+        1.0f, -1.0f, 0.0f,  0.0f, 0.0f, 1.0f, 1.0f,
 
-        -1.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f,   // 3 triangle
-        0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-        -1.0f, 0.0f, 0.0f,  0.0f, 0.0f, 1.0f,
+        -1.0f, 1.0f, 0.0f,  1.0f, 0.0f, 0.0f, 1.0f,   // 3 triangle
+        0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 1.0f,
+        -1.0f, 0.0f, 0.0f,  0.0f, 0.0f, 1.0f, 1.0f,
 
-        -1.0f, 0.0f, 0.0f,  1.0f, 0.0f, 0.0f,   // 4 triangle
-        0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
-        -1.0f, -1.0f, 0.0f,  0.0f, 0.0f, 1.0f
+        -1.0f, 0.0f, 0.0f,  1.0f, 0.0f, 0.0f, 1.0f,   // 4 triangle
+        0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f, 1.0f,
+        -1.0f, -1.0f, 0.0f,  0.0f, 0.0f, 1.0f, 1.0f,
     };
 
     glGenBuffers(1, &vertexBuffer);
