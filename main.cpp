@@ -105,44 +105,28 @@ int main()
     unsigned int vertexArray = 0;
     unsigned int vertexSize = 3;
     unsigned int colorSize = 3;
-    unsigned int vertexeCount = vertexSize * 4;
+    unsigned int vertexeCount = vertexSize * 1;
 
-
-    float vertexes[] = {
-    // vertexCoordinate  |  vertexColor
-       -0.5f, 1.0f, 0.0f,   1.0f, 0.0f, 0.0f,
-       -1.0f, 0.0f, 0.0f,   0.f, 1.0f, 0.0f,  
-       0.0f, 0.0f, 0.0f,    0.0f, 0.0f, 1.0f
-
-       -1.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,
-       0.0f, 0.0f, 0.0f,    0.f, 1.0f, 0.0f,
-       -0.5f, -1.0f, 0.0f,  0.0f, 0.0f, 1.0f,
-
-        0.5f, 1.0f, 0.0f,   1.0f, 0.0f, 0.0f,
-        0.0f, 0.0f, 0.0f,   0.f, 1.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f,
-
-        0.0f, 0.0f, 0.0f,   1.0f, 0.0f, 0.0f,
-        1.0f, 0.0f, 0.0f,   0.f, 1.0f, 0.0f,
-        0.5f,-1.f, 0.0f,    0.0f, 0.0f, 1.0f
+    float vertices[] = {
+        1.0f, 1.0f, 0.0f,   1.0f, 0.0f, 0.0f,
+        0.0f, 0.0f, 0.0f,   0.0f, 1.0f, 0.0f,
+        1.0f, 0.0f, 0.0f,   0.0f, 0.0f, 1.0f
     };
-
 
     glGenBuffers(1, &vertexBuffer);
     glGenVertexArrays(1, &vertexArray);
 
-
     glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glBindVertexArray(vertexArray);
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexes), vertexes, GL_STATIC_DRAW);
-    glVertexAttribPointer(0, vertexSize, GL_FLOAT, GL_FALSE, sizeof(float) * vertexSize * colorSize, (void*)0);
-    glVertexAttribPointer(1, colorSize, GL_FLOAT, GL_FALSE, sizeof(float) * colorSize, (void*)(sizeof(float) * vertexSize));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)0);
     glEnableVertexAttribArray(0);
+
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (void*)(sizeof(float) * 3));
     glEnableVertexAttribArray(1);
 
     glBindVertexArray(0);
-
 
     while (!glfwWindowShouldClose(window))
     {
