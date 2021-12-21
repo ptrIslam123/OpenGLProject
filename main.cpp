@@ -1,6 +1,10 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
  
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb/stb_image.h"
+
 #include <exception> 
 #include <iostream>
 #include <string>
@@ -96,6 +100,32 @@ int main()
     glDeleteShader(fragmentShader);
     /** Шейдерная программа создана **/
 
+    /** Загрузка данных текстуры **/
+    const std::string textureFilePath = "../resources/texture2D-1.jpg";
+    int width = 0, height = 0, nrChannels = 0;
+    unsigned char* texData = stbi_load(textureFilePath.c_str(), &width, &height, &nrChannels, 0);
+
+    unsigned int textureObject = 0;
+    glGenTextures(1, &textureObject);
+    glBindTexture(GL_TEXTURE2, textureObject);
+
+    // Устанавливаем параметры наложения и фильтрации текстур (для текущего связанного объекта текстуры)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    if (texData) {
+        glTexImage2D(GL_TEXTURE2, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
+        glGenerateMipmap(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE2, 0);
+    } else {
+        std::cout << "Create texture error" << std::endl;
+        return -1;
+    }
+
+    stbi_image_free(texData);
+
 
     /** Генерация буфера на GPU и заполнения буфера данными о вершинах **/
     unsigned int vertexBufferObject = 0;
@@ -107,14 +137,15 @@ int main()
     unsigned int colorSize = 3;
     unsigned int indexSize = 3;
     unsigned int vertexCounter = 6;
+    unsigned int textureSize = 2;
 
     
     float vertices[] = {
-        // unique vertex coordinate |   vertex color
-        0.5f, 0.5f, 0.0f,               1.0f, 0.0f, 0.0f,
-        0.5f, -0.5f, 0.0f,              0.0f, 1.0f, 0.0f,
-        -0.5f, -0.5f, 0.0f,             0.0f, 0.0f, 1.0f,
-        -0.5f, 0.5f, 0.0f,              0.0f, 0.0f, 0.0f
+        // unique vertex coordinate |   vertex color        |   texture coordinate
+        0.5f, 0.5f, 0.0f,               1.0f, 0.0f, 0.0f,       1.0f, 1.0f,
+        0.5f, -0.5f, 0.0f,              0.0f, 1.0f, 0.0f,       1.0f, 0.0f,
+        -0.5f, -0.5f, 0.0f,             0.0f, 0.0f, 1.0f,       0.0f, 0.0f,
+        -0.5f, 0.5f, 0.0f,              0.0f, 0.0f, 0.0f,       0.0f, 1.0f
     };
 
     unsigned int indices[] = {
@@ -134,11 +165,14 @@ int main()
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, vertexSize, GL_FLOAT, GL_FALSE, sizeof(float) * (vertexSize + colorSize), (void*)0);
+    glVertexAttribPointer(0, vertexSize, GL_FLOAT, GL_FALSE, sizeof(float) * (vertexSize + colorSize + textureSize), (void*)0);
     glEnableVertexAttribArray(0);
 
-    glVertexAttribPointer(1, colorSize, GL_FLOAT, GL_FALSE, sizeof(float) * (vertexSize + colorSize), (void*)(sizeof(float) * vertexSize));
+    glVertexAttribPointer(1, colorSize, GL_FLOAT, GL_FALSE, sizeof(float) * (vertexSize + colorSize + textureSize), (void*)(sizeof(float) * vertexSize));
     glEnableVertexAttribArray(1);
+
+    glVertexAttribPointer(2, textureSize, GL_FLOAT, GL_FALSE, sizeof(float) * (vertexSize + colorSize + textureSize), (void*)(sizeof(float) * (vertexSize + colorSize)));
+    glEnableVertexAttribArray(2);
 
     glBindVertexArray(0);
 
@@ -151,6 +185,7 @@ int main()
  
         glUseProgram(shader);
         glBindVertexArray(vertexArrayObject);
+        glBindTexture(GL_TEXTURE2, textureObject);
         glDrawElements(GL_TRIANGLES, vertexCounter, GL_UNSIGNED_INT, 0);
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -159,7 +194,7 @@ int main()
     glfwTerminate();
     return 0;
 }
- 
+
 std::string readShaderCode(const std::string &shaderSourcePath) {
     std::ifstream file(shaderSourcePath);
 
