@@ -100,31 +100,34 @@ int main()
     glDeleteShader(fragmentShader);
     /** Шейдерная программа создана **/
 
-    /** Загрузка данных текстуры **/
-    const std::string textureFilePath = "../resources/texture2D-1.jpg";
-    int width = 0, height = 0, nrChannels = 0;
-    unsigned char* texData = stbi_load(textureFilePath.c_str(), &width, &height, &nrChannels, 0);
 
-    unsigned int textureObject = 0;
+    /** Загрузка и создание текстуры **/
+    unsigned int textureObject;
     glGenTextures(1, &textureObject);
-    glBindTexture(GL_TEXTURE2, textureObject);
-
-    // Устанавливаем параметры наложения и фильтрации текстур (для текущего связанного объекта текстуры)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
+    glBindTexture(GL_TEXTURE_2D, textureObject); // все последующие GL_TEXTURE_2D-операции теперь будут влиять на данный текстурный объект
+	
+    // Установка параметров наложения текстуры. ![Без этих параметров текстура не будет правильно рисоваться]!
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT); // установка метода наложения текстуры GL_REPEAT (стандартный метод наложения)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	
+    // Установка параметров фильтрации текстуры
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    if (texData) {
-        glTexImage2D(GL_TEXTURE2, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, texData);
-        glGenerateMipmap(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE2, 0);
-    } else {
-        std::cout << "Create texture error" << std::endl;
-        return -1;
+	
+    // Загрузка изображения, создание текстуры и генерирование мипмап-уровней
+    int width, height, nrChannels;
+    unsigned char* data = stbi_load("../resources/tex2D.jpg", &width, &height, &nrChannels, 0);
+    if (data)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+        glGenerateMipmap(GL_TEXTURE_2D);
     }
-
-    stbi_image_free(texData);
+    else
+    {
+        std::cout << "Failed to load texture" << std::endl;
+    }
+    stbi_image_free(data);
+    /** END TEXTURE LOAD **/
 
 
     /** Генерация буфера на GPU и заполнения буфера данными о вершинах **/
@@ -183,6 +186,7 @@ int main()
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
  
+
         glUseProgram(shader);
         glBindVertexArray(vertexArrayObject);
         glBindTexture(GL_TEXTURE2, textureObject);
