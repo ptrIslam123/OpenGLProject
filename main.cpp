@@ -120,42 +120,53 @@ int main()
     unsigned int vertexSize = 3;
     unsigned int colorSize = 3;
 
-    float vertices[] = {
-       -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.0f,  0.5f, 0.0f  
-    };
 
-    float colors[] = {
-        1.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 1.0f
-    };
+    // Указание вершин (и буфера(ов)) и настройка вершинных атрибутов
+	float vertices[] = {
+		  // координаты        // текстурные координаты
+		 -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+		  0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
+		  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		 -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
 
-    glGenBuffers(1, &vertexBufferObject);
-    glGenBuffers(1, &colorBufferObject);
-    glGenVertexArrays(1, &vertexArrayObject);
+		 -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		  0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		  0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		  0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
+		 -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
+		 -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+
+		 -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		 -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		 -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		 -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		 -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		  0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		  0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		  0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+
+		 -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+		  0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
+		  0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		  0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
+		 -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+		 -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+
+		 -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
+		  0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
+		  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		  0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+		 -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
+		 -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+	};
     
-
-
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-    glBindVertexArray(vertexArrayObject);
-
-    glVertexAttribPointer(0, vertexSize, GL_FLOAT, GL_FALSE, 0, nullptr);
-    glEnableVertexAttribArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER ,0);
-
-
-
-    glBindBuffer(GL_ARRAY_BUFFER, colorBufferObject);
-    glBindVertexArray(vertexArrayObject);
-
-    glVertexAttribPointer(1, colorSize, GL_FLOAT, GL_FALSE, 0, nullptr);
-    glEnableVertexAttribArray(1);
-
-    glBindBuffer(GL_ARRAY_BUFFER ,0);
-
 
     while (!glfwWindowShouldClose(window))
     {
