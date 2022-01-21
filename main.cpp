@@ -4,6 +4,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb/stb_image.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 #include "glm/vec3.hpp"
 #include "glm/vec4.hpp"
 #include "glm/mat3x3.hpp"
@@ -23,10 +25,6 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
 std::string readShaderCode(const std::string &shaderSourcePath);
-
-void scaleVertices(float* vertices, unsigned int verticesSize, float scaleVal);
-void translateVertices(float* vertices, unsigned int verticesSize, float translateVal);
-void rotateVertices(float* vertices, unsigned int verticesSize, float rotateVal);
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
@@ -113,72 +111,79 @@ int main()
 
 
     /** Генерация буфера на GPU и заполнения буфера данными о вершинах **/
+    unsigned int modelLocation = 0;
+    unsigned int viewLocation = 0;
+    unsigned int projLocation = 0;
     unsigned int vertexBufferObject = 0;
-    unsigned int vertexArrayObject = 0;
+    unsigned int elementBufferObject = 0;
     unsigned int colorBufferObject = 0;
-    
+    unsigned int colorArrayObject = 0;
+    unsigned int vertexArrayObject = 0;
     unsigned int vertexSize = 3;
     unsigned int colorSize = 3;
+    unsigned int indexSize = 3;
+    unsigned int vertexCounter = 6;
 
+    
     float vertices[] = {
-       -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.0f,  0.5f, 0.0f  
+        // unique vertex coordinate
+        0.5f, 0.5f, 0.0f,             
+        0.5f, -0.5f, 0.0f,             
+        -0.5f, -0.5f, 0.0f,           
+        -0.5f, 0.5f, 0.0f
     };
 
-    float colors[] = {
-        1.0f, 0.0f, 0.0f,
-        0.0f, 1.0f, 0.0f,
-        0.0f, 0.0f, 1.0f
+    unsigned int indices[] = {
+        2, 3, 0,
+        0, 1, 2
     };
 
     glGenBuffers(1, &vertexBufferObject);
-    glGenBuffers(1, &colorBufferObject);
+    glGenBuffers(1, &elementBufferObject);
     glGenVertexArrays(1, &vertexArrayObject);
+
+    glBindVertexArray(vertexArrayObject);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferObject);
     
 
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-    glBindVertexArray(vertexArrayObject);
-
-    glVertexAttribPointer(0, vertexSize, GL_FLOAT, GL_FALSE, 0, nullptr);
+    glVertexAttribPointer(0, vertexSize, GL_FLOAT, GL_FALSE, sizeof(float) * (vertexSize), (void*)0);
     glEnableVertexAttribArray(0);
 
-    glBindBuffer(GL_ARRAY_BUFFER ,0);
-
-
-
-    glBindBuffer(GL_ARRAY_BUFFER, colorBufferObject);
-    glBindVertexArray(vertexArrayObject);
-
-    glVertexAttribPointer(1, colorSize, GL_FLOAT, GL_FALSE, 0, nullptr);
-    glEnableVertexAttribArray(1);
-
-    glBindBuffer(GL_ARRAY_BUFFER ,0);
+    glBindVertexArray(0);
 
 
     while (!glfwWindowShouldClose(window))
     {
         processInput(window);
-		
-        /** Последовательное применение вращения, масштабирования и сдвига треугольника **/
-        rotateVertices(vertices, sizeof(vertices), 50.f);
-        scaleVertices(vertices, sizeof(vertices), 1.00025f);
-        translateVertices(vertices, sizeof(vertices), 2.5f);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
  
         glUseProgram(shader);
 
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_DYNAMIC_DRAW);
+        glm::mat4 model = glm::mat4(1.0f);
+        glm::mat4 view = glm::mat4(1.0f);
+        glm::mat4 proj = glm::mat4(1.0f);
 
-        glBindBuffer(GL_ARRAY_BUFFER, colorBufferObject);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(colors), colors, GL_STATIC_DRAW);
+        model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f)) * 
+                glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
+        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+        proj = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        
+        modelLocation = glGetUniformLocation(shader, "model");
+        viewLocation = glGetUniformLocation(shader, "view");
+        projLocation = glGetUniformLocation(shader, "proj");
+
+        glUniformMatrix4fv(modelLocation, 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(viewLocation, 1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(projLocation, 1, GL_FALSE, glm::value_ptr(proj));
 
         glBindVertexArray(vertexArrayObject);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, vertexCounter, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -186,62 +191,6 @@ int main()
  
     glfwTerminate();
     return 0;
-}
- 
-
-void rotateVertices(float* vertices, unsigned int verticesSize, const float rotateVal) {
-    /** Матрица вращения по оси Z **/
-    const glm::mat4 rotate(
-        cos(rotateVal), -sin(rotateVal), 0.0f, 0.0f,
-        sin(rotateVal), cos(rotateVal), 0.0f, 0.0f,
-        0.0f, 0.0f, 1.0f, 0.0f,
-        0.0f, 0.f, 0.0f, 1.0f
-    );
-
-    for (int i = 0; i < verticesSize; ++i) {
-        const glm::vec4 vertex(vertices[i], vertices[i + 1], vertices[i + 2], 1.0f);
-        const glm::vec4 delVertex = rotate * vertex;
-
-        vertices[i] = delVertex.x;
-        vertices[i + 1] = delVertex.y;
-        vertices[i + 2] = delVertex.z;
-    }
-}
-
-void scaleVertices(float* vertices, unsigned int verticesSize, const float scaleVal) {
-    const glm::mat3 scale(
-        scaleVal, 0.0f, 0.0f,
-        0.0f, scaleVal, 0.0f,
-        0.0f, 0.0f, scaleVal
-    );
-
-    for (int i = 0; i < verticesSize; ++i) {
-        const glm::vec3 vertex(vertices[i], vertices[i + 1], vertices[i + 2]);
-        const glm::vec3 delVertex = scale * vertex;
-
-        vertices[i] = delVertex.x;
-        vertices[i + 1] = delVertex.y;
-        vertices[i + 2] = delVertex.z;
-    }
-}
-
-
-void translateVertices(float* vertices, unsigned int verticesSize, const float translateVal) {
-    const glm::mat4 translate(
-        1.0f, 0.0f, 0.0f, translateVal,
-        0.0f, 1.0f, 0.0f, translateVal,
-        0.0f, 0.0f, 1.0f, translateVal,
-        0.0f, 0.0f, 0.0f, 1.0f
-    );
-
-    for (int i = 0; i < 1; ++i) {
-        const glm::vec4 vertex(vertices[i], vertices[i + 1], vertices[i + 2], 1.0f);
-        const glm::vec4 delVertex = translate * vertex;
-
-        vertices[i] = delVertex.x;
-        vertices[i + 1] = delVertex.y;
-        vertices[i + 2] = delVertex.z;
-    }
 }
 
 std::string readShaderCode(const std::string &shaderSourcePath) {
