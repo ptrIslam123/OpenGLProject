@@ -198,8 +198,18 @@ int main()
         glm::mat4 view = glm::mat4(1.0f);
         glm::mat4 proj = glm::mat4(1.0f);
 
-        model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f)) * 
-                glm::scale(model, glm::vec3(0.75f, 0.75f, 0.75f));
+        /**
+         *
+         *  Матрица модели - сжатие объекта в 1/2 раз и повращать на 50(радиан) * curTime по всем 3 осям.
+         *  Матрица вида (обзор камеры) пока просто отодвинута от 3 единицы от окна отображения, где окно отображения
+         *      вся плоскость [-10; 10] (после сжатия в 1/2 стало от -10 до 10 вместо -1 и 1).
+         *  Матрица проекции - стандартный фруструм под 45(радиан) Ner = 0.1 Far = 100.
+         * 
+         * !Для того что бы перейти от 2D к 3D необходимо просто ввести матрицу проекции.  
+         * 
+         */
+        model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 1.0f, 1.0f)) * 
+                glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
         proj = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         
