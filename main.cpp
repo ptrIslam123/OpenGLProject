@@ -124,7 +124,7 @@ int main()
     unsigned int indexSize = 3;
     unsigned int vertexCounter = 36;
 
-    
+    // вершины куба (6 граней * 2 треугольника * 3 вершины каждый)
     float vertices[] = {
     -0.5f, -0.5f, -0.5f,
      0.5f, -0.5f, -0.5f,
@@ -169,22 +169,15 @@ int main()
     -0.5f,  0.5f, -0.5f
     };
 
-    unsigned int indices[] = {
-        0, 1, 3, // первый треугольник
-        1, 2, 3  // второй треугольник
-    };
-
     glGenBuffers(1, &vertexBufferObject);
     glGenBuffers(1, &elementBufferObject);
     glGenVertexArrays(1, &vertexArrayObject);
 
     glBindVertexArray(vertexArrayObject);
     glBindBuffer(GL_ARRAY_BUFFER, vertexBufferObject);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, elementBufferObject);
     
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     glVertexAttribPointer(0, vertexSize, GL_FLOAT, GL_FALSE, sizeof(float) * (vertexSize), (void*)0);
     glEnableVertexAttribArray(0);
