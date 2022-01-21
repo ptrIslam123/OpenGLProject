@@ -28,7 +28,19 @@ std::string readShaderCode(const std::string &shaderSourcePath);
 
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
- 
+
+// Получения базисных векторов системы координат камеры
+/**
+ * Пока н е понятно как расчитываются базисные вектора для камеры!!!
+ * 
+ */
+glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraDirection = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
+
+float deltaTime = 0.0f;	// время между текущим кадром и последним кадром
+float lastFrame = 0.0f;
+
 int main()
 {
     glfwInit();
@@ -184,9 +196,13 @@ int main()
 
     glBindVertexArray(0);
 
-
     while (!glfwWindowShouldClose(window))
     {
+        // Логическая часть работы со временем для каждого кадра
+		float currentFrame = glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
+
         processInput(window);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -198,19 +214,12 @@ int main()
         glm::mat4 view = glm::mat4(1.0f);
         glm::mat4 proj = glm::mat4(1.0f);
 
-        /**
-         *
-         *  Матрица модели - сжатие объекта в 1/2 раз и повращать на 50(радиан) * curTime по всем 3 осям.
-         *  Матрица вида (обзор камеры) пока просто отодвинута от 3 единицы от окна отображения, где окно отображения
-         *      вся плоскость [-10; 10] (после сжатия в 1/2 стало от -10 до 10 вместо -1 и 1).
-         *  Матрица проекции - стандартный фруструм под 45(радиан) Ner = 0.1 Far = 100.
-         * 
-         * !Для того что бы перейти от 2D к 3D необходимо просто ввести матрицу проекции.  
-         * 
-         */
-        model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 1.0f, 1.0f)) * 
+        model = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f)) * 
+                glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 1.0f, 1.0f)) * 
                 glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
-        view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+
+        view = glm::lookAt(cameraPosition, cameraPosition + cameraDirection, cameraUp);
+
         proj = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         
         modelLocation = glGetUniformLocation(shader, "model");
@@ -245,8 +254,23 @@ std::string readShaderCode(const std::string &shaderSourcePath) {
 
 void processInput(GLFWwindow *window)
 {
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
+    }
+
+    float cameraSpeed = 2.5 * deltaTime;
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+		cameraPosition += cameraSpeed * cameraDirection;
+    }
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+		cameraPosition -= cameraSpeed * cameraDirection;
+    }
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+		cameraPosition -= glm::normalize(glm::cross(cameraDirection, cameraUp)) * cameraSpeed;
+    }
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+		cameraPosition += glm::normalize(glm::cross(cameraDirection, cameraUp)) * cameraSpeed;
+    }
 }
  
 void framebuffer_size_callback(GLFWwindow* window, int width, int height)
