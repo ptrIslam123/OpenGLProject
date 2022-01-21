@@ -122,20 +122,56 @@ int main()
     unsigned int vertexSize = 3;
     unsigned int colorSize = 3;
     unsigned int indexSize = 3;
-    unsigned int vertexCounter = 6;
+    unsigned int vertexCounter = 36;
 
     
     float vertices[] = {
-        // unique vertex coordinate
-        0.5f, 0.5f, 0.0f,             
-        0.5f, -0.5f, 0.0f,             
-        -0.5f, -0.5f, 0.0f,           
-        -0.5f, 0.5f, 0.0f
+    -0.5f, -0.5f, -0.5f,
+     0.5f, -0.5f, -0.5f,
+     0.5f,  0.5f, -0.5f,
+     0.5f,  0.5f, -0.5f,
+    -0.5f,  0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f,
+ 
+    -0.5f, -0.5f,  0.5f,
+     0.5f, -0.5f,  0.5f,
+     0.5f,  0.5f,  0.5f,
+     0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f,  0.5f,
+    -0.5f, -0.5f,  0.5f,
+ 
+    -0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f,
+    -0.5f, -0.5f, -0.5f,
+    -0.5f, -0.5f,  0.5f,
+    -0.5f,  0.5f,  0.5f,
+ 
+     0.5f,  0.5f,  0.5f,
+     0.5f,  0.5f, -0.5f,
+     0.5f, -0.5f, -0.5f,
+     0.5f, -0.5f, -0.5f,
+     0.5f, -0.5f,  0.5f,
+     0.5f,  0.5f,  0.5f,
+ 
+    -0.5f, -0.5f, -0.5f,
+     0.5f, -0.5f, -0.5f,
+     0.5f, -0.5f,  0.5f,
+     0.5f, -0.5f,  0.5f,
+    -0.5f, -0.5f,  0.5f,
+    -0.5f, -0.5f, -0.5f,
+ 
+    -0.5f,  0.5f, -0.5f,
+     0.5f,  0.5f, -0.5f,
+     0.5f,  0.5f,  0.5f,
+     0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f,  0.5f,
+    -0.5f,  0.5f, -0.5f
     };
 
     unsigned int indices[] = {
-        2, 3, 0,
-        0, 1, 2
+        0, 1, 3, // первый треугольник
+        1, 2, 3  // второй треугольник
     };
 
     glGenBuffers(1, &vertexBufferObject);
@@ -170,7 +206,7 @@ int main()
         glm::mat4 proj = glm::mat4(1.0f);
 
         model = glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(0.5f, 1.0f, 0.0f)) * 
-                glm::scale(model, glm::vec3(0.25f, 0.25f, 0.25f));
+                glm::scale(model, glm::vec3(0.75f, 0.75f, 0.75f));
         view = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
         proj = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         
@@ -183,7 +219,7 @@ int main()
         glUniformMatrix4fv(projLocation, 1, GL_FALSE, glm::value_ptr(proj));
 
         glBindVertexArray(vertexArrayObject);
-        glDrawElements(GL_TRIANGLES, vertexCounter, GL_UNSIGNED_INT, 0);
+        glDrawArrays(GL_TRIANGLES, 0, vertexCounter);
 
         glfwSwapBuffers(window);
         glfwPollEvents();
