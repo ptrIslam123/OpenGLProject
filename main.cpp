@@ -30,14 +30,9 @@ const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 
 // Получения базисных векторов системы координат камеры
-/**
- * Пока н е понятно как расчитываются базисные вектора для камеры!!!
- * 
- */
-glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f, 3.0f);
+glm::vec3 cameraPosition = glm::vec3(0.0f, 0.0f,  3.0f);
 glm::vec3 cameraDirection = glm::vec3(0.0f, 0.0f, -1.0f);
-glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
-
+glm::vec3 cameraUp = glm::vec3(0.0f, 1.0f,  0.0f);
 
 
 float deltaTime = 0.0f;	// время между текущим кадром и последним кадром
@@ -220,7 +215,11 @@ int main()
                 glm::rotate(model, (float)glfwGetTime() * glm::radians(50.0f), glm::vec3(1.0f, 1.0f, 1.0f)) * 
                 glm::scale(model, glm::vec3(0.5f, 0.5f, 0.5f));
 
-        view = glm::lookAt(cameraPosition, cameraPosition + cameraDirection, cameraUp);
+        view = glm::lookAt(
+            cameraPosition,                             // вектор позиции камеры 
+            cameraPosition + cameraDirection,           // вектор цели камеры
+            cameraUp                                    // вектор вверх камеры
+        );
 
         proj = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         
@@ -260,7 +259,7 @@ void processInput(GLFWwindow *window)
         glfwSetWindowShouldClose(window, true);
     }
 
-    float cameraSpeed = 2.5 * deltaTime;
+    const float cameraSpeed = 2.5 * deltaTime;
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
 		cameraPosition += cameraSpeed * cameraDirection;
     }
@@ -268,10 +267,10 @@ void processInput(GLFWwindow *window)
 		cameraPosition -= cameraSpeed * cameraDirection;
     }
 	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-		cameraPosition -= glm::normalize(glm::cross(cameraDirection, cameraUp)) * cameraSpeed;
+		cameraPosition -= glm::normalize(glm::cross(cameraDirection, cameraUp)) * cameraSpeed; // правильным считается этот вариант, почему не аторой вариант не работает не понимаю.
     }
 	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-		cameraPosition += glm::normalize(glm::cross(cameraDirection, cameraUp)) * cameraSpeed;
+		cameraPosition += glm::normalize(glm::cross(cameraPosition, cameraDirection)) * cameraSpeed; // почему-то так не работает
     }
 }
  
